@@ -1,0 +1,8 @@
+
+qiskit==0.45.1
+mapomatic
+qiskit-aer==0.13.1
+matplotlib
+qiskit_ibmq_provider
+qiskit_ibm_runtime
+    

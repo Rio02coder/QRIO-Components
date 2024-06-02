@@ -1,0 +1,12 @@
+# See the OWNERS docs at https://go.k8s.io/owners
+
+approvers:
+  - denkensk
+  - ffromani
+  - Huang-Wei
+reviewers:
+  - PiotrProkop
+  - seanmalloy
+  - swatisehgal
+  - Tal-or
+  - zwpaper

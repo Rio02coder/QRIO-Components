@@ -1,0 +1,29 @@
+.centered-text {
+  text-align: left;
+  font-size: medium;
+  width: 80%;
+  max-width: 80%; /* Adjust the maximum width based on your design */
+  margin: 0 auto; /* Center the div horizontally */
+  padding: 20px; /* Add padding for spacing inside the div */
+  overflow: auto;
+}
+
+.disconnect-button-container {
+  position: absolute;
+  top: 10px; /* Adjust the top margin based on your preference */
+  left: 10px; /* Adjust the right margin based on your preference */
+}
+
+.disconnect-button {
+  background-color: red;
+  color: white;
+  font-weight: bold;
+  padding: 10px 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+}
+
+.disconnect-button:hover {
+  background-color: darkred;
+}

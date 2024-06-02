@@ -1,0 +1,31 @@
+.logbutton {
+  background-color: black;
+  color: #fff;
+  width: 30%;
+  height: 2.9em;
+  border: #3654ff 0.2em solid;
+  border-radius: 11px;
+  text-align: center;
+  transition: all 0.6s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logbutton:hover {
+  background-color: #3654ff;
+  cursor: pointer;
+}
+
+.logbutton svg {
+  width: 1.6em;
+  transition: all 0.6s ease;
+}
+
+.logbutton:hover svg {
+  transform: translateX(5px);
+}
+
+.text {
+  margin: 0 1.5em;
+}

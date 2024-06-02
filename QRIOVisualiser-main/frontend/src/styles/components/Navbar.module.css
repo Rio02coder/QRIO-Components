@@ -1,0 +1,44 @@
+.container {
+  background-color: black;
+  display: flex;
+  height: 5.5rem;
+  width: 100vw;
+  z-index: 10;
+  margin: 0%;
+  /* border-width: 5px;
+  border-color: black;
+  border-bottom-width: 8px;
+  border-style: solid; */
+  /* box-shadow: 2px 3px 9px #000000; */
+  justify-content: space-between;
+}
+
+.downloadContainer {
+  width: 20%;
+  min-width: 15rem;
+  max-width: 25rem;
+  justify-content: center;
+  display: flex;
+}
+
+.list {
+  display: flex;
+  list-style-type: none;
+  height: 100%;
+}
+
+.listItem {
+  margin-right: 90px;
+  align-self: center;
+}
+
+.textLink {
+  color: white;
+}
+
+.homeLink {
+  align-self: center;
+  margin-right: 90px;
+  height: 50px;
+  width: 50px;
+}

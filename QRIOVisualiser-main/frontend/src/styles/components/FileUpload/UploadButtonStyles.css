@@ -1,0 +1,27 @@
+.button_container {
+  background-color: black;
+  color: white;
+  border-radius: 10em;
+  font-size: 17px;
+  font-family: "Poppins-Bold";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 30%;
+  height: 20%;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  border: 1px solid black;
+  box-shadow: 0 0 0 0 white;
+}
+
+.button_container:hover {
+  transform: translateY(-4px) translateX(-2px);
+  box-shadow: 2px 5px 0 0 white;
+}
+
+.button_container:active {
+  transform: translateY(2px) translateX(1px);
+  box-shadow: 0 0 0 0 white;
+}

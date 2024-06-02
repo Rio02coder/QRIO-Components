@@ -1,0 +1,59 @@
+.formInput {
+  font-family: "Poppins-Regular";
+  margin: 3em 0;
+  width: 80%;
+  position: relative;
+  justify-content: flex-start;
+  display: flex;
+}
+
+.formInput input {
+  font-size: 100%;
+  padding: 0.8em;
+  outline: none;
+  border: 2px solid rgb(0, 0, 0);
+  background-color: transparent;
+  border-radius: 20px;
+  width: 45vw;
+  max-width: 40vw;
+  font-family: "Poppins-Regular";
+  height: 2.5vh;
+  max-height: 2.5vh;
+}
+
+.formInput label {
+  font-size: 1em;
+  position: absolute;
+  left: 0;
+  top: 20%;
+  padding: 0.2% 3%;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  align-self: center;
+  color: rgb(110, 110, 110);
+}
+
+.formInput input:focus ~ label {
+  transform: translateY(-90%) scale(0.9);
+  margin-left: 1.3em;
+  background-color: white;
+  /* padding: 0.4em; */
+}
+
+.formInput input:valid ~ label {
+  transform: translateY(-100%) scale(0.9);
+  margin-left: 1.3em;
+  background-color: white;
+  /* padding: 0.4em; */
+}
+
+.formInput input:focus {
+  border-color: #7c61f0;
+}
+
+.error {
+  font-family: "Poppins-Light";
+  color: red;
+  align-self: flex-start;
+  margin-bottom: -2%;
+}

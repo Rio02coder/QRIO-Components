@@ -1,0 +1,75 @@
+/* export const stepButtonStyles: React.CSSProperties = {
+  backgroundColor: "#00a9ff",
+  color: "white",
+  marginTop: "3%",
+  height: "6vh",
+  width: "20%",
+  fontFamily: "Poppins-Regular",
+  textAlign: "center",
+  fontSize: "2vh",
+  border: "none",
+  borderRadius: "5px",
+  boxShadow: "2px 5px 10px rgba(0, 0, 0, 0.1)",
+  transition: "box-shadow 0.3s ease",
+  whiteSpace: "nowrap",
+  cursor: "pointer",
+  alignSelf: "center",
+}; */
+
+.step-button {
+  height: 6vh;
+  width: 20%;
+  outline: none;
+  cursor: pointer;
+  border: none;
+  padding: 0.9rem 2rem;
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  position: relative;
+  align-self: center;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 500px;
+  overflow: hidden;
+  background: #66ff66;
+  color: ghostwhite;
+  text-align: center;
+}
+
+.step-button span {
+  position: relative;
+  z-index: 10;
+  transition: color 0.4s;
+  font-family: "Poppins-Bold";
+}
+
+.step-button:hover span {
+  color: black;
+}
+
+.step-button::before,
+.step-button::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.step-button::before {
+  content: "";
+  background: #000;
+  width: 120%;
+  left: -10%;
+  transform: skew(30deg);
+  transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+}
+
+.step-button:hover::before {
+  transform: translate3d(100%, 0, 0);
+}

@@ -1,0 +1,14 @@
+export enum JOB_CONFIG {
+  T1 = 0.000112,
+  T2 = 0.000112,
+  errorRate = 0.0124,
+  readout = 0.0124,
+  T1_MIN = 0.000059,
+  T1_MAX = 0.000137,
+  T2_MIN = 0.000033,
+  T2_MAX = 0.000116,
+  ERROR_RATE_MIN = 0.0078,
+  ERROR_RATE_MAX = 0.3166,
+  READOUT_MIN = 0.0121,
+  READOUT_MAX = 0.1268,
+}

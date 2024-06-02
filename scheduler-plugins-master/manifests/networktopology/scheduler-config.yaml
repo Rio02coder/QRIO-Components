@@ -1,0 +1,31 @@
+apiVersion: kubescheduler.config.k8s.io/v1
+kind: KubeSchedulerConfiguration
+leaderElection:
+  leaderElect: false
+clientConnection:
+  kubeconfig: "/etc/kubernetes/scheduler.conf"
+profiles:
+  - schedulerName: network-aware-scheduler
+    plugins:
+      multiPoint:
+        enabled:
+          - name: NetworkOverhead
+            weight: 5 # A higher weight is given to NetworkOverhead to favor allocation schemes with lower latency.
+        disabled:
+          - name: NodeResourcesFit # Preferably avoid the combination of NodeResourcesFit with NetworkOverhead
+      queueSort:
+        enabled:
+          - name: TopologicalSort
+        disabled:
+          - name: "*"
+    pluginConfig:
+      - name: TopologicalSort
+        args:
+          namespaces:
+            - "default"
+      - name: NetworkOverhead
+        args:
+          namespaces:
+            - "default"
+          weightsName: "UserDefined" # or Dijkstra
+          networkTopologyName: "net-topology-test"

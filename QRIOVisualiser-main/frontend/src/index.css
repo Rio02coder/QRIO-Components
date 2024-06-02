@@ -1,0 +1,110 @@
+@font-face {
+  font-family: "Poppins-Black";
+  src: url("fonts/Poppins-Black.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins-BlackItalic";
+  src: url("fonts/Poppins-BlackItalic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins-Bold";
+  src: url("fonts/Poppins-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins-BoldItalic";
+  src: url("fonts/Poppins-BoldItalic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins-ExtraBold";
+  src: url("fonts/Poppins-ExtraBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins-ExtraBoldItalic";
+  src: url("fonts/Poppins-ExtraBoldItalic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins-ExtraLight";
+  src: url("fonts/Poppins-ExtraLight.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins-ExtraLightItalic";
+  src: url("fonts/Poppins-ExtraLightItalic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins-Italic";
+  src: url("fonts/Poppins-Italic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins-Light";
+  src: url("fonts/Poppins-Light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins-LightItalic";
+  src: url("fonts/Poppins-LightItalic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins-Medium";
+  src: url("fonts/Poppins-Medium.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins-MediumItalic";
+  src: url("fonts/Poppins-MediumItalic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins-Regular";
+  src: url("fonts/Poppins-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins-SemiBold";
+  src: url("fonts/Poppins-SemiBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins-SemiBoldItalic";
+  src: url("fonts/Poppins-SemiBoldItalic.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins-Thin";
+  src: url("fonts/Poppins-Thin.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Poppins-ThinItalic";
+  src: url("fonts/Poppins-ThinItalic.ttf") format("truetype");
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(253, 29, 29, 1) 41%,
+    rgba(252, 176, 69, 1) 100%
+  );
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}

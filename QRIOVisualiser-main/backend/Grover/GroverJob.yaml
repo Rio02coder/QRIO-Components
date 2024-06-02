@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: grover-job
+spec:
+  template:
+    spec:
+      containers:
+        - name: grover-job
+          image: shmeelok/grover-circuit:20
+          resources:
+            requests:
+              qiskube.com/qubits: 7
+            limits:
+              qiskube.com/qubits: 7
+          volumeMounts:
+            - name: noise-volume
+              mountPath: /host
+      volumes:
+        - name: noise-volume
+          hostPath:
+            path: /
+            type: Directory
+      restartPolicy: Never

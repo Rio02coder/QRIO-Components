@@ -1,0 +1,62 @@
+.input {
+  font-family: "Poppins-Regular";
+  margin: 3em 0;
+  width: 80%;
+  position: relative;
+  justify-content: flex-start;
+  display: flex;
+}
+
+.input input {
+  font-size: 100%;
+  padding: 0.8em;
+  outline: none;
+  border: 2px solid rgb(0, 0, 0);
+  background-color: transparent;
+  border-radius: 20px;
+  width: 45vw;
+  max-width: 40vw;
+  font-family: "Poppins-Regular";
+  height: 2.5vh;
+  max-height: 2.5vh;
+}
+
+.input label {
+  font-size: 1em;
+  position: absolute;
+  left: 0;
+  top: 2%;
+  padding: 0.2% 3%;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  align-self: center;
+  color: rgb(110, 110, 110);
+}
+
+.input input:focus {
+  border-color: #7c61f0;
+}
+
+.input select {
+  -webkit-appearance: none;
+  min-height: 60px;
+  min-width: 60px;
+  max-height: 90px;
+  margin-left: 2%;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  border-radius: 22%;
+  border-width: 2px;
+  font-family: "Poppins-Regular";
+  text-align-last: center;
+  font-size: medium;
+}
+
+.error {
+  font-family: "Poppins-Light";
+  color: red;
+  align-self: flex-start;
+  margin-bottom: -2%;
+}
