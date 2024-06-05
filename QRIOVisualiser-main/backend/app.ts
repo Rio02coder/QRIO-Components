@@ -69,17 +69,16 @@ app.post("/submit-job", upload.single("circuitFile"), (req, res) => {
     });
 });
 
-app.get("/get-logs", (req, res) => {
-  const reqBody = req.body;
-  const jobName = reqBody.jobName;
-  getNodeNameWithJob(jobName)
+app.get("/get-logs/:jobName", (req, res) => {
+  const jobName = req.params.jobName;
+  getNodeNameWithJob(req.params.jobName)
     .then(async (deviceName) => {
       const getPodCommand = `kubectl get pods --selector=job-name=${jobName} -o=jsonpath='{.items[0].metadata.name}'`;
-      const podName = await promiseExec(getPodCommand);
-      const getJobLogInfoCommand = `kubectl logs pod/${podName.stdout} --follow`;
-      const { stderr, stdout } = await promiseExec(getJobLogInfoCommand);
+      var { stdout, stderr } = await promiseExec(getPodCommand);
+      const getJobLogInfoCommand = `kubectl logs pod/${stdout}`;
+      var { stderr, stdout } = await promiseExec(getJobLogInfoCommand);
       var response: JobLogResponse = { device: deviceName };
-      if (!stderr && !stdout && stdout !== "") {
+      if (stdout) {
         response = { ...response, log: stdout };
       }
       res.send(response);
@@ -90,93 +89,6 @@ app.get("/get-logs", (req, res) => {
       });
     });
 });
-
-// app.get("/get-job-info", (req: Request, res) => {
-//   res.send(
-//     "WebSocket connection is required for pod info. Use a WebSocket client to connect."
-//   );
-// });
-
-// app.get("/get-cluster-info", async (req, res) => {
-//   var jobName = req.params.jobName;
-//   const getJobLogInfoCommand = `kubectl logs job/${jobName}`;
-//   const { stdout } = await promiseExec(getJobLogInfoCommand);
-//   res.send(stdout);
-// });
-
-// app.post("/upload-qasm", upload.single("file"), (req, res) => {
-//   res.send("File uploaded!");
-// });
-
-// app.post("/create-job", (req, res) => {
-//   const form = formidable({ multiples: true });
-//   form.parse(req, async (err, fields) => {
-//     const jobCreator = new JobCreator();
-//     console.log("Here");
-//     // console.log(fields.dirName);
-//     // console.log(fields.imageName);
-//     // console.log(fields.jobFileName);
-//     // console.log(fields.fileName);
-//     // console.log(fields.pythonFileName);
-//     // console.log(fields.qubits);
-//     // console.log(fields.jobName);
-//     await jobCreator.createJob(
-//       fields.dirName,
-//       fields.imageName,
-//       fields.jobFileName,
-//       fields.fileName,
-//       fields.pythonFileName,
-//       fields.qubits,
-//       fields.jobName
-//     );
-//     res.send({ success: true });
-//   });
-// });
-
-// jobNamespace.on("connection", async (socket) => {
-//   console.log("A client connected to node info namespace");
-//   socket.on("sendJob", async (jobName) => {
-//     const describePodInterval = setInterval(async () => {
-//       const nodeName = await getNodeNameWithJob(jobName);
-//       console.log("Node name", nodeName);
-//       const nodeInfoObj = getNodeInfo(nodeName);
-//       const textNodeInfo = await nodeInfoObj.getInfo();
-//       jobNamespace.emit("nodeInfo", {
-//         data: textNodeInfo,
-//         timestamp: Date.now(),
-//       });
-//     }, 5000);
-//     socket.on("disconnect", () => {
-//       console.log("A client disconnected from node info namespace");
-//       clearInterval(describePodInterval);
-//     });
-//   });
-// });
-
-// clusterNamespace.on("connection", (socket) => {
-//   console.log("A client connected to job log info namespace");
-
-//   socket.on("sendJob", async (jobName) => {
-//     const getPodCommand = `kubectl get pods --selector=job-name=${jobName} -o=jsonpath='{.items[0].metadata.name}'`;
-//     const { stdout } = await promiseExec(getPodCommand);
-//     console.log(stdout);
-//     const podName = stdout;
-//     const getJobLogInfoCommand = `kubectl logs pod/${podName} --follow`;
-//     const describePodInterval = setInterval(async () => {
-//       console.log("Here");
-//       const { stdout } = await promiseExec(getJobLogInfoCommand);
-//       console.log(stdout);
-//       clusterNamespace.emit("clusterInfo", {
-//         data: stdout,
-//         timestamp: Date.now(),
-//       });
-//     }, 10000);
-//     socket.on("disconnect", () => {
-//       console.log("A client disconnected from node info namespace");
-//       clearInterval(describePodInterval);
-//     });
-//   });
-// });
 
 server.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);

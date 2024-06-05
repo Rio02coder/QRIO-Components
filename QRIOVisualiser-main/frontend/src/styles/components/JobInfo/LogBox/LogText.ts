@@ -3,7 +3,6 @@ const styles: React.CSSProperties = {
   fontFamily: "Poppins-Medium",
   display: "flex",
   fontSize: "2vh",
-  whiteSpace: "pre-wrap",
 };
 
 export default styles;

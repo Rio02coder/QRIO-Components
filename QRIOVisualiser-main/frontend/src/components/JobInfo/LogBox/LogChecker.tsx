@@ -1,15 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import "../../../styles/components/JobInfo/LogBox/LogChecker.css";
 import axios, { AxiosResponse } from "axios";
 import { BASE_URL } from "../../../backend/server";
+import { JobContext } from "../../../types/JobContext";
 
 type TProps = {
   onLogRetrieval: (res: AxiosResponse<any, any>) => void;
 };
 
 const LogChecker = ({ onLogRetrieval }: TProps) => {
+  const jobContext = useContext(JobContext);
   const onPress = () => {
-    axios.get(BASE_URL + "get-logs").then((res) => {
+    axios.get(BASE_URL + "get-logs/" + jobContext?.jobName).then((res) => {
       onLogRetrieval(res);
     });
   };
