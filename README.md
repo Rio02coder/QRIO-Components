@@ -1,11 +1,10 @@
-
 # QRIO Components
 
 Demo video drive link: https://drive.google.com/file/d/1HTfthhcSC0FUswhxCshzbNE1sEZ9NKRA/view?usp=drivesdk
 
-
 # Setup QRIO Meta server
-To setup the QRIO meta server we require to create backends. First we need to: `cd QRIOMeta-main/core/backends` and then change the files `qrio-m02`, `qrio-m03` up till `qrio-m11`. These files are the initial IBM quantum backends we have placed as an example. However, we require to change these to reflect the backends in each node in the cluster. Also, the number of files to modify/create here are the `number nodes in the cluster - 1` (as one of the nodes in the cluster will be the master server and no job is scheduled there).  Additionally, we can ignore other files currently in the directory.
+
+To setup the QRIO meta server we require to create backends. First we need to: `cd QRIOMeta-main/core/backends` and then change the files `qrio-m02`, `qrio-m03` up till `qrio-m11`. These files are the initial IBM quantum backends we have placed as an example. However, we require to change these to reflect the backends in each node in the cluster. Also, the number of files to modify/create here are the `number nodes in the cluster - 1` (as one of the nodes in the cluster will be the master server and no job is scheduled there). Additionally, we can ignore other files currently in the directory.
 
 # Running QRIO Meta server
 
@@ -14,20 +13,25 @@ When the setup of QRIO meta is done, we can run it in the following way:
 1. cd `QRIOMeta-main` from the root of the project.
 2. Create a virtual environment for Python
 3. `pip install -r requirements.txt`
-4. `python3 manage.py runserver <IP ADDRESS>:8000`
+4. `python3 manage.py showmigrations`
+5. `python3 manage.py makemigrations`
+6. `python3 manage.py migrate`
+7. `python3 manage.py runserver <IP ADDRESS>:8000`
 
 # Setup QRIO Visualizer
+
 To setup the QRIO Visualizer we simply require to change the endpoints of the Meta server and Master server. To do so, first `cd QRIOVisualiser-main/frontend/src/backend/server.ts` from the root directory of the project. It is necessary that you do not run the metaserver in `localhost`
 
 # Running QRIO Visualizer
+
 We need to first ensure that the most recent version of `node` and `React` is installed in the system. Following that, we can perform the following steps:
 
 1. `cd QRIOVisualiser-main/frontend`
 2. `npm install`
 3. `npm start`
 
-
 # Running QRIO Master server
+
 We need to first ensure that the most recent version of `node` is installed in the system. Following that, we can perform the following steps:
 
 1. `cd QRIOVisualiser-main/backend`
@@ -35,7 +39,9 @@ We need to first ensure that the most recent version of `node` is installed in t
 3. `npm run start`
 
 # Setup the cluster
+
 To setup the cluster, one must have the following setup:
+
 1. Docker
 2. Kubernetes
 3. Kubectl
@@ -58,22 +64,27 @@ Kubectl proxy
 ```
 
 In the other terminal run the following command
+
 ```bash
 cd <DIRECTORY WHERE THE PROJECT IS STORED>
 run setup.sh
 ```
 
 # Setup Quantum Nodes in the cluster
+
 Once the cluter is setup we require to setup the Quantum devices in each node(except the master node).
 To do so, perform the following for all nodes except the master node (or control plane node in Kubernetes terminology)
+
 1. Log in to the node
-`sudo docker exec -it <NODE-NAME> bash`
+   `sudo docker exec -it <NODE-NAME> bash`
 
 2. Create a file called `backend.py`
+
 ```bash
 # Note that whatever backend you create, it has to be a Qiskit backend and must be exposed in a variable called backend
 backend = <YOUR QUANTUM BACKEND AS A QISKIT BACKEND>
 ```
+
 As example backends we have provided some IBM fake backends in the files `qrio-m02.py` to `qrio-m11.py` in the root directory(This is considering a 11 node cluster. So, we have 10 worker nodes and 1 master node).
 The contents of these files can be placed in `backend.py` in the worker nodes in the cluster.
 
@@ -92,25 +103,31 @@ Once done, get back to `scheduler-plugins-master` and run the following command:
 ```bash
 make local-image
 ```
+
 Once the image is built, run the following command
+
 ```bash
 docker push <REGISTRY/IMAGE_NAME:TAG>
 ```
+
 the values for these were set by you in `QRIO Components/scheduler-plugins-master/hack/build-images.sh`
 
 We now require to set this scheduler in the cluster. To do so, perform the following steps:
 
 1. Log in to the master node of the cluster
+
 ```bash
 sudo docker exec -it $(sudo docker ps | grep control-plane | awk '{print $1}') bash
 ```
 
 2. Backup the original kubernetes scheduler
+
 ```bash
 cp /etc/kubernetes/manifests/kube-scheduler.yaml /etc/kubernetes/kube-scheduler.yaml
 ```
 
 3. Create `etc/kubernetes/circuitnoise-config.yaml`
+
 ```bash
 apiVersion: kubescheduler.config.k8s.io/v1
 kind: KubeSchedulerConfiguration
@@ -198,10 +215,11 @@ spec:
 ```
 
 Once done, we can check the installation with the following command.
+
 ```bash
 Kubectl get pods -n kube-system
 ```
-We should see all pods with a status of `Running`
 
+We should see all pods with a status of `Running`
 
 Once all the components are setup and running, we can start interacting with the cluster through QRIO Visualizer.
