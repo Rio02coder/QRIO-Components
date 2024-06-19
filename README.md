@@ -74,7 +74,8 @@ To do so, perform the following for all nodes except the master node (or control
 # Note that whatever backend you create, it has to be a Qiskit backend and must be exposed in a variable called backend
 backend = <YOUR QUANTUM BACKEND AS A QISKIT BACKEND>
 ```
-As example backends we have provided some IBM fake backends in the files `qrio-m02` to `qrio-m11` in the root directory(This is considering a 11 node cluster. So, we have 10 worker nodes and 1 master node). 
+As example backends we have provided some IBM fake backends in the files `qrio-m02.py` to `qrio-m11.py` in the root directory(This is considering a 11 node cluster. So, we have 10 worker nodes and 1 master node).
+The contents of these files can be placed in `backend.py` in the worker nodes in the cluster.
 
 # Setup the scheduler
 
