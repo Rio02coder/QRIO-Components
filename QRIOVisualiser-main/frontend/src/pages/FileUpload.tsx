@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useContext } from "react";
+import React, { ChangeEvent, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../components/Logo";
 import ChooserBox from "../components/FileUpload/ChooserBox";
@@ -6,6 +6,7 @@ import ChooserButton from "../components/FileUpload/Button";
 import UploadButton from "../components/FileUpload/UploadButton";
 import { JobContext } from "../types/JobContext";
 import "../styles/components/FileUpload/Main.css";
+import { JOB_CONFIG } from "../utils/Consts";
 
 export const OrText = () => {
   return (
@@ -25,6 +26,26 @@ const FileUpload: React.FC = () => {
   //     setLoading(false);
   //   }
   // }, [jobContext]);
+
+  useEffect(() => {
+    //
+    jobContext?.setJobData({
+      jobName: "",
+      qubits: 0,
+      imageName: "",
+      topologyFile: null,
+      circuitFile: null,
+      fidelity: undefined,
+      errorRate: JOB_CONFIG.errorRate,
+      readout: JOB_CONFIG.readout,
+      T1: JOB_CONFIG.T1,
+      T2: JOB_CONFIG.T2,
+      cpu: 0,
+      memory: 0,
+    });
+    jobContext?.clearError();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const navigate = useNavigate();
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {

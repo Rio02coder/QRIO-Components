@@ -23,7 +23,7 @@ import (
 //     "qiskube-m07": "FakeMumbai",
 // }
 
-var serviceIp = "<PUT YOUR SERVICE IP HERE. THIS IS THE IP ADDRESS OF META SERVER>"
+var serviceIp = "<META SERVER IP>"
 
 // var serviceCache ServiceCache = ServiceCache{serviceMap: map[string]string{}}
 

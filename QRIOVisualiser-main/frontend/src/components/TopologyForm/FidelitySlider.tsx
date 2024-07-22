@@ -15,7 +15,7 @@ const FidelitySlider = () => {
         max={1}
         style={{ height: "30%", marginTop: "7%", marginBottom: "7%" }}
         marks
-        step={0.1}
+        step={0.01}
         valueLabelDisplay="auto"
         onChange={(ev, val) => {
           jobContext?.setJobData({ fidelity: val as number });

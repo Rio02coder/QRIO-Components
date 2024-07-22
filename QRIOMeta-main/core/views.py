@@ -47,9 +47,8 @@ def get_score(request, name, device):
             circuit_scorer = TopologyScorer()
         result = circuit_scorer.score_circuit(circuit_obj, device)
         return JsonResponse({"score":result}, status=200)
-        # if result >= 0.0:
-        #     return JsonResponse({"score":result}, status=200)
-        # return JsonResponse({"message":"Bad request"}, status=400)
+        # result, result_2, fidelity, oracle_fidelity = circuit_scorer.score_circuit(circuit_obj, device)
+        # return JsonResponse({"score": result, "fidelity": fidelity, "oracle_score": result_2, "oracle_fidelity": oracle_fidelity}, status=200)
     return JsonResponse({"message":"Method not supported"},status=400)
     
 

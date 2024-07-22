@@ -59,33 +59,21 @@ class JobCreator {
     pythonFileName: string
   ) {
     const dockerString = `
-# Use Alpine Linux as base image
-FROM python:3.8-alpine AS build
+# Use base image
+FROM python:3.8
 
 # Set the working directory
 WORKDIR /app
 
 # Install system dependencies
-RUN apk update && \
-    apk add --no-cache build-base hdf5-dev
+RUN apt-get update && \
+    apt-get install -y build-essential libhdf5-dev
 
 # Copy the application files
 COPY ${pythonFileName}.py ${fileName}.qasm requirements.txt ./
 
 # Install Python dependencies
-RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
-
-# Final runtime image
-FROM python:3.8-alpine
-
-# Copy Python dependencies from the build stage
-COPY --from=build /install /usr/local
-
-# Set the working directory
-WORKDIR /app
-
-# Copy the application files
-COPY --from=build /app/${pythonFileName}.py /app/${fileName}.qasm /app/requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Run the application
 CMD ["python", "./${pythonFileName}.py"]
@@ -95,12 +83,9 @@ CMD ["python", "./${pythonFileName}.py"]
 
   createRequirementsFile(dirName: string) {
     const contents = `
-qiskit
-mapomatic
-qiskit-aer
-matplotlib
-qiskit_ibmq_provider
-qiskit_ibm_runtime
+qiskit==1.0.2
+qiskit-aer==0.14.1
+qiskit-ibm-runtime==0.22.0
     `;
     fs.writeFileSync(`${dirName}/requirements.txt`, contents);
   }
@@ -130,8 +115,16 @@ spec:
           resources:
             requests:
               qrio.com/qubits: ${qubits}
+              qrio.com/error-rate: ${errorRate}
+              qrio.com/readout-rate: ${readoutRate}
+              qrio.com/T1: ${T1}
+              qrio.com/T2: ${T2}
             limits:
               qrio.com/qubits: ${qubits}
+              qrio.com/error-rate: ${errorRate}
+              qrio.com/readout-rate: ${readoutRate}
+              qrio.com/T1: ${T1}
+              qrio.com/T2: ${T2}
           volumeMounts:
           - name: noise-volume
             mountPath: /host

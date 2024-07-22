@@ -16,7 +16,7 @@ When the setup of QRIO meta is done, we can run it in the following way:
 4. `python3 manage.py showmigrations`
 5. `python3 manage.py makemigrations`
 6. `python3 manage.py migrate`
-7. `python3 manage.py runserver <IP ADDRESS>:8000`
+7. `python3 manage.py runserver <IP ADDRESS-WHICH-IS-NOT-LOCALHOST>:8000`
 
 # Setup QRIO Visualizer
 
@@ -30,19 +30,12 @@ We need to first ensure that the most recent version of `node` and `React` is in
 2. `npm install`
 3. `npm start`
 
-# Running QRIO Master server
-
-We need to first ensure that the most recent version of `node` is installed in the system. Following that, we can perform the following steps:
-
-1. `cd QRIOVisualiser-main/backend`
-2. `npm run build`
-3. `npm run start`
-
 # Setup the cluster
 
 To setup the cluster, one must have the following setup:
 
-1. Docker
+1. Docker (Once setup make sure that you are logged in to your docker account in docker hub. This can be made sure using commands for docker login.
+   The login step is crucial as the master server will your namespace which is linked to your docker account to upload docker containers.)
 2. Kubernetes
 3. Kubectl
 4. Minikube
@@ -60,7 +53,7 @@ Once the cluster nodes are setup we need to set some properties for each node. T
 To run the setup file, we need to do have two terminals opened. In one of the terminals run the following command
 
 ```bash
-Kubectl proxy
+kubectl proxy
 ```
 
 In the other terminal run the following command
@@ -117,7 +110,7 @@ We now require to set this scheduler in the cluster. To do so, perform the follo
 1. Log in to the master node of the cluster
 
 ```bash
-sudo docker exec -it $(sudo docker ps | grep control-plane | awk '{print $1}') bash
+sudo docker exec -it qrio bash
 ```
 
 2. Backup the original kubernetes scheduler
@@ -217,9 +210,25 @@ spec:
 Once done, we can check the installation with the following command.
 
 ```bash
-Kubectl get pods -n kube-system
+kubectl get pods -n kube-system
 ```
 
 We should see all pods with a status of `Running`
 
+# Setup QRIO Master server
+
+The QRIO master server is pretty lightweight to setup. We only need to go to line 35 in QRIOVisualiser-main/backend/utils/Processor/Request/SubmitJob.ts and enter your docker namespace which is available in your docker hub when you login. This is really important as the master server uploads the created docker containers to this namespace.
+
+# Running QRIO Master server
+
+We need to first ensure that the most recent version of `node` is installed in the system. Following that, we can perform the following steps:
+
+1. `cd QRIOVisualiser-main/backend`
+2. `npm run build`
+3. `npm run start`
+
 Once all the components are setup and running, we can start interacting with the cluster through QRIO Visualizer.
+
+# Experiments
+
+Once all the above instructions are followed we can start running the experiments. We recommend going through them in order. Experiment 1 - Experiment 5. The details on how to run these experiments are given in their individual folders. An Important Note: Since these experiments (2-5) use a custom backend we can have issues with transpilation as mentioned in this GitHub issue: https://github.com/Qiskit/qiskit/pull/11333/commits/735e958e36026bc0981c0f3627106c47e6ae8ac7#diff-00276708f86c726ae04a2c670e74177eaad6aad971e017951bb5792501d13bf5 To fix this, go the virtual env folder of QRIOMeta-main folder and then to lib/python3.11/site-packages/qiskit/transpiler/target.py line 581 and replace that with `return qargs - {None}` . This fix is suggested by this GitHub issue.

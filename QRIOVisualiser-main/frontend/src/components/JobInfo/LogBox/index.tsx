@@ -9,20 +9,26 @@ type TProps = {
 };
 
 const LogBox = ({ setDevice }: TProps) => {
-  const [showLogButton, setShowLogButton] = useState<boolean>(true);
   const [logMessage, setLogMessage] = useState<string>("");
 
   const manageDevice = (response: AxiosResponse<any, any>) => {
-    if (response.status < 400 && response.data.device) {
+    if (response.status < 400 && response.data.device !== "") {
       setDevice(response.data.device);
+    } else {
+      alert(
+        "Device has not been found for the job. It is in the process of being allocated"
+      );
     }
   };
 
   const manageLogs = (response: AxiosResponse<any, any>) => {
-    if (response.status === 400 || response.data.message) {
-      setShowLogButton(true);
+    console.log(response.data);
+    if (!response.data.log || response.data.log === "") {
+      console.log("Here");
+      alert(
+        "Logs are not yet found for the job. It is possible that the job is still running or there are no logs for your job"
+      );
     } else {
-      setShowLogButton(false);
       setLogMessage(response.data.log);
     }
   };
@@ -34,8 +40,16 @@ const LogBox = ({ setDevice }: TProps) => {
 
   return (
     <div style={styles}>
-      {showLogButton && <LogChecker onLogRetrieval={manageResponse} />}
       {logMessage !== "" && <div style={LogStyles}>{logMessage}</div>}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <LogChecker onLogRetrieval={manageResponse} />
+      </div>
     </div>
   );
 };

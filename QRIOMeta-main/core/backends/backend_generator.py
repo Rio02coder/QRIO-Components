@@ -284,7 +284,7 @@ def generate_fake_backend_text(backend_type: str, backend_class: str, ) -> str:
 
 if not os.path.exists("Quantum_devices"):
     os.makedirs("Quantum_devices")
-BASE_DIR = 'Quantum_devices_5'
+BASE_DIR = 'Quantum_devices'
 idx = 0
 for i in qubit_list:
     for j in edge_probability_list:

@@ -22,16 +22,17 @@ export class SubmitJobRequestProcessor {
     [
       "readout",
       (val: number) => {
-        return 100000 - val * 10000;
+        return Math.trunc(100000 - val * 10000 * 100);
       },
     ],
     [
       "errorRate",
       (val: number) => {
-        return 100000 - val * 10000;
+        return Math.trunc(100000 - val * 10000 * 100);
       },
     ],
   ]);
+  private NAMESPACE = "<YOUR-DOCKER-NAMESPACE-AVAILABLE-ON-DOCKER-HUB>";
   private floatToIntConvFields = ["T1", "T2", "errorRate", "readout"];
   private floatFieldRanges: Map<string, number[]> = new Map<string, number[]>([
     ["T1", [FLOATFIELDVALUES.T1_MIN, FLOATFIELDVALUES.T1_MAX]],
@@ -54,14 +55,6 @@ export class SubmitJobRequestProcessor {
       );
     });
   }
-
-  // createJobSpace(jobFile: File, jobName: string) {
-  //   // Create a folder with the job name and put the job file on there
-  // }
-
-  // startJob() {
-  //   // Use JobCreator class to submit request to Kubernetes with the job details.
-  // }
 
   private validateFloatToIntFields(body: SubmitJobRequest) {
     this.floatToIntConvFields.forEach((field) => {
@@ -86,28 +79,9 @@ export class SubmitJobRequestProcessor {
     });
   }
 
-  // private contactMetadataServer(body: SubmitJobRequest) {
-  //   //
-  //   let metaRequestor: MetaServerRequestor;
-  //   if (body.fidelity) {
-  //     metaRequestor = new MetaServerFidelityRequestor({
-  //       circuitFile: body.circuitFile,
-  //       fidelity: body.fidelity,
-  //     });
-  //     metaRequestor
-  //       .executeRequest()
-  //       .then(() => {
-  //         console.log("Meta server got request");
-  //       })
-  //       .catch(() => {
-  //         console.log("Meta server request failed");
-  //       });
-  //   } else {
-  //     // metaRequestor = new MetaServerTopologyRequestor({
-  //     //   topologyFile: body.topologyFile as File,
-  //     // });
-  //   }
-  // }
+  private processImageName(body: SubmitJobRequest) {
+    body.imageName = this.NAMESPACE + "/" + body.imageName;
+  }
 
   private getPythonFileName(fileName: string) {
     return fileName + "-py";
@@ -126,6 +100,7 @@ export class SubmitJobRequestProcessor {
     this.convertUnits(body);
     this.validateFloatToIntFields(body);
     this.processFloatFields(body);
+    this.processImageName(body);
     // Process Request
     const imageName = body.imageName;
     const qubits = body.qubits.toString();
@@ -133,6 +108,10 @@ export class SubmitJobRequestProcessor {
     const T2 = body.T2.toString();
     const readoutRate = body.readout.toString();
     const errorRate = body.errorRate.toString();
+    console.log(errorRate);
+    console.log(readoutRate);
+    console.log(T1);
+    console.log(T2);
     const jobName = body.jobName;
     return jobCreator.createJob(
       this.getDirectoryName(fileName),

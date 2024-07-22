@@ -73,10 +73,12 @@ app.get("/get-logs/:jobName", (req, res) => {
   const jobName = req.params.jobName;
   getNodeNameWithJob(req.params.jobName)
     .then(async (deviceName) => {
+      console.log(deviceName);
       const getPodCommand = `kubectl get pods --selector=job-name=${jobName} -o=jsonpath='{.items[0].metadata.name}'`;
       var { stdout, stderr } = await promiseExec(getPodCommand);
       const getJobLogInfoCommand = `kubectl logs pod/${stdout}`;
       var { stderr, stdout } = await promiseExec(getJobLogInfoCommand);
+      console.log(stderr);
       var response: JobLogResponse = { device: deviceName };
       if (stdout) {
         response = { ...response, log: stdout };
@@ -85,7 +87,8 @@ app.get("/get-logs/:jobName", (req, res) => {
     })
     .catch(() => {
       res.send({
-        message: "No logs",
+        device: "",
+        log: "",
       });
     });
 });

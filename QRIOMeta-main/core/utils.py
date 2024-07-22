@@ -117,13 +117,14 @@ def to_clifford(qc: QuantumCircuit, backend=None, is_clifford: bool = True):
     """Convert a circuit to a clifford circuit, if the backend is provided, the circuit
     will be compiled on the backend first, then convert to clifford circuit
     """
-    qc = transpile(
-        qc,
-        backend.backend,
-        coupling_map=backend.backend.configuration().coupling_map,
-        optimization_level=3,
-        seed_transpiler=170,
-    )
+    if backend is not None:
+        qc = transpile(
+            qc,
+            backend.backend,
+            coupling_map=backend.backend.configuration().coupling_map,
+            optimization_level=3,
+            seed_transpiler=170,
+        )
     new_qc = QuantumCircuit(qc.num_qubits, qc.num_clbits)
     for i in qc:
         new_i = i.copy()
@@ -180,36 +181,6 @@ def get_score_for_device(file_path: str, device_name: str) -> float:
 
     except:
         return -20.0
-
-
-# if __name__ == "__main__":
-#     from qiskit_ibm_runtime.fake_provider import FakeJakartaV2
-#     from qiskit_aer.noise import NoiseModel
-#     from qiskit_aer import AerSimulator
-#     from dataclasses import dataclass
-#     from qiskit.providers import Backend
-
-#     print("start")
-#     quantum_circuit = QuantumCircuit(2, 2)
-#     quantum_circuit.x(0)
-#     quantum_circuit.h(1)
-#     fake_backend = FakeJakartaV2()
-#     noise_model = NoiseModel.from_backend(fake_backend)
-#     backend = Backend_NoiseModel(
-#         backend=AerSimulator(
-#             noise_model=noise_model,
-#             coupling_map=fake_backend.coupling_map,
-#             basis_gates=noise_model.basis_gates,
-#         ),
-#         noise_model=noise_model,
-#         init_fidelity=1.0,
-#         name=fake_backend.name,
-#     )
-#     user_wants = 0.96
-#     x = heli_fide_helper(
-#         quantum_circuit, backend, Backend_NoiseModel(), shots=1000, measure=True
-#     )
-#     print(x)
     
 class CircuitScorer(ABC):
 
@@ -223,11 +194,26 @@ class CircuitScorer(ABC):
 
     def get_device(self, device_name):    
         """Get Backend"""
+        # The following is the original code for the normal workflow with the tool
         with open(os.getcwd()+f"/core/backends/" + device_name + '.py', 'r') as file:
             content = file.read()
             local_namespace = {}
             exec(content, local_namespace)
             return local_namespace.get('backend')
+        
+        # Comment everything in this function and uncomment the following for Experiment 2
+        # with open(os.getcwd()+f"/core/backends/Experiment_2_backends/" + device_name + '.py', 'r') as file:
+        #     content = file.read()
+        #     local_namespace = {}
+        #     exec(content, local_namespace)
+        #     return local_namespace.get('backend')
+
+        # Comment everything in this function and uncomment the following for Experiment 4 & 5
+        # with open(os.getcwd()+f"/core/backends/Quantum_devices/{device_name}/" + device_name + '.py', 'r') as file:
+        #     content = file.read()
+        #     local_namespace = {}
+        #     exec(content, local_namespace)
+        #     return local_namespace.get('backend')
 
 class FidelityScorer(CircuitScorer):
 
@@ -241,7 +227,8 @@ class FidelityScorer(CircuitScorer):
         return QuantumCircuit.from_qasm_str(qasm)
     
     def score_circuit(self, circuit: Circuit, device_name: str):
-        device = super().get_device(device_name=device_name)
+        device = BackendV2Converter(super().get_device(device_name=device_name))
+        # device = super().get_device(device_name=device_name)
         file_path = circuit.circuit_file.path
         user_desired_fidelity = circuit.fidelity #This assumes fidelity to be not null
         quantum_circuit = self.get_circuit(file_path=file_path)
@@ -258,13 +245,22 @@ class FidelityScorer(CircuitScorer):
         name=device.name)
         
         achieved_fidelity = heli_fide_helper(quantum_circuit, Backend_NoiseModel(), backend, shots=900, measure=True)
+
+        # Uncomment for Experiment 5
+        # oracle_fidelity = heli_fide_helper(to_clifford(quantum_circuit), Backend_NoiseModel(), backend, shots=900, measure=True)
         #Scoring process
         diff = abs(user_desired_fidelity - achieved_fidelity)
         if achieved_fidelity < user_desired_fidelity:
             diff *= self.penalty_factor
         print("Diff", diff)
+
+        # diff_2 = abs(user_desired_fidelity - oracle_fidelity)
+        # if oracle_fidelity < user_desired_fidelity:
+        #     diff_2 *= self.penalty_factor
+        # print("Diff2", diff_2)
+
         return diff
-        # return achieved_fidelity
+        # return diff, diff_2, achieved_fidelity, oracle_fidelity
 
 class TopologyScorer(CircuitScorer):
     def get_circuit(self, file_path: str) -> QuantumCircuit:
