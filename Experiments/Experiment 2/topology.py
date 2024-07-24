@@ -1,7 +1,7 @@
 import requests
 
 # URL to which the POST request is sent
-upload_url = 'http://<META-SERVER-URL>:8000/upload-circuit/'
+upload_url = 'http://<META-SERVER-IP>:8000/upload-circuit/'
 
 
 # Form data to be sent in the POST request
@@ -38,7 +38,7 @@ score = 10000 # A high number
 best_device = ''
 
 for filtered_device in filtered_devices:
-    url = f'http://<META-SERVER-URL>:8000/get-score/example-topology/{filtered_device}/'
+    url = f'http://<META-SERVER-IP>:8000/get-score/example-topology/{filtered_device}/'
     response = requests.get(url=url)
     response_json = response.json()
     if response_json['score'] < score:

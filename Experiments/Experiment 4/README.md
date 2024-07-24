@@ -13,9 +13,11 @@ Create a virtual environment
 pip install requests
 ```
 
+We need to then enter the META-SERVER-URL in lines 8 and line 47 of topology_ranking.py
+
 We need to do one change in QRIOMeta-main
 
-Go to QRIOMeta-main/core/utils.py comment line 198 to 202 and uncomment 205 to 209
+Go to QRIOMeta-main/core/utils.py uncomment 171 to 176 and comment everything else in the function
 
 Once that is done run the following command
 
@@ -23,4 +25,47 @@ Once that is done run the following command
 python3 topology_ranking.py
 ```
 
-As output you would find the scores found by the random scheduling strategy and the QRIO scheduling strategy and also a dictionary saying the average decrease in scores of QRIO's scheduled device and the device chosen at random.
+The output is `similar` to:
+full Round 0
+random score 0.9999858466127605
+lowest_Score 0.19418617712031871
+################
+full Round 1
+random score 0.9999664725245402
+lowest_Score 0.20385764418426555
+################
+grid Round 0
+random score 0.8173709749983582
+lowest_Score 0.046861651948303384
+################
+grid Round 1
+random score 0.5889804427833296
+lowest_Score 0.046861651948303384
+################
+h_square Round 0
+random score 0.3849874598722839
+lowest_Score 0.06946242495991461
+################
+h_square Round 1
+random score 0.9999831415904125
+lowest_Score 0.06946242495991461
+################
+line Round 0
+random score 0.9988985309728632
+lowest_Score 0.05822983320040409
+################
+line Round 1
+random score 0.9999961464992105
+lowest_Score 0.05822983320040409
+################
+ring Round 0
+random score 0.9948626402510966
+lowest_Score 0.08056104441696343
+################
+ring Round 1
+random score 0.9999999999692435
+lowest_Score 0.08056104441696343
+################
+{'full': 0.8009542489163581, 'grid': 0.6563140569425405, 'h_square': 0.6230228757714336, 'line': 0.9412175055356328, 'ring': 0.9168702756932066}
+
+As the dictionary output (which shows the average difference between the score obtained by the scheduler and the score obtained by the random scheduler) you would find the scores found by the random scheduling strategy and the QRIO scheduling strategy and also a dictionary saying the average decrease in scores of QRIO's scheduled device and the device chosen at random.

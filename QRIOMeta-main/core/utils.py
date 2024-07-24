@@ -22,11 +22,6 @@ class Backend_NoiseModel:
     """Can't extract the noise model from the backend,
     so we need to store them together."""
 
-    # backend: Backend = AerSimulator()
-    # noise_model: NoiseModel = NoiseModel()
-    # init_fidelity: float = 1.0
-    # name: str = "default"
-
     def __init__(self, backend = AerSimulator(), noise_model = NoiseModel(), init_fidelity=1.0, name = "default"):
         self.backend = backend
         self.noise_model = noise_model
@@ -56,23 +51,6 @@ class MeasureAllUsedQubitsPass(TransformationPass):
             measure = Measure()
             dag.apply_operation_back(measure, qargs=[qubit], cargs=[clbit])
         return dag
-
-
-def get_quantum_circuit(file_path):
-    with open(file_path, 'r') as file:
-        content = file.read()
-        # Dynamically execute the content of the file in a local namespace
-        local_namespace = {}
-        exec(content, local_namespace)
-        return local_namespace.get('qc')
-
-def get_device(device_name):    
-    with open(os.getcwd()+"/core/backends/" + device_name + '.py', 'r') as file:
-        content = file.read()
-        local_namespace = {}
-        exec(content, local_namespace)
-        return local_namespace.get('backend')
-
 
 def modify_gates(circuit: QuantumCircuit) -> QuantumCircuit:
     qc = QuantumCircuit(circuit.num_qubits)
@@ -145,11 +123,14 @@ def heli_fide_helper(
     backend2: Backend_NoiseModel,
     shots: int = 1000,
     measure: bool = True,
+    print_circuit: bool = False
 ):
     """helper function for heli_fide"""
     if measure:
         pass_manager = PassManager([MeasureAllUsedQubitsPass()])
         circuit = pass_manager.run(circuit)
+    if print_circuit:
+        print(circuit)
     # ensure the circuit are post transpiled
     res1 = baseline.backend.run(
         circuit, shots=shots, pass_manager=PassManager()
@@ -158,29 +139,7 @@ def heli_fide_helper(
         circuit, shots=shots, pass_manager=PassManager()
     ).result()
     fidelity = hellinger_fidelity(res1.get_counts(), res2.get_counts())
-    print(f"backend: {backend2.name}, fidelity: {fidelity}")
     return fidelity
-
-
-def get_score_for_device(file_path: str, device_name: str) -> float:
-    # Get the score
-    quantum_circuit: QuantumCircuit = get_quantum_circuit(file_path)
-    device: Backend_NoiseModel = get_device(device_name)
-
-    try:
-        return heli_fide_helper(
-            quantum_circuit, device, Backend_NoiseModel(), shots=1000, measure=True
-        )
-        # Using mapomatic
-        # Later on your stuff is integrated here
-        # trans_qc = transpile(quantum_circuit, device)
-        # small_qc = mm.deflate_circuit(trans_qc)
-        # layouts = mm.matching_layouts(small_qc, device)
-        # scores = mm.evaluate_layouts(small_qc, layouts, backend=device)
-        # return scores[0][1]
-
-    except:
-        return -20.0
     
 class CircuitScorer(ABC):
 
@@ -243,21 +202,25 @@ class FidelityScorer(CircuitScorer):
         noise_model=noise_model,
         init_fidelity=1.0,
         name=device.name)
-        
-        achieved_fidelity = heli_fide_helper(quantum_circuit, Backend_NoiseModel(), backend, shots=900, measure=True)
+        # This is the fidelity of the original circuit converted to a clifford circuit.
+        achieved_fidelity = heli_fide_helper(to_clifford(quantum_circuit, backend=backend, is_clifford=True), Backend_NoiseModel(), backend, shots=900, measure=True)
 
         # Uncomment for Experiment 5
-        # oracle_fidelity = heli_fide_helper(to_clifford(quantum_circuit), Backend_NoiseModel(), backend, shots=900, measure=True)
+        # # This is the fidelity of the original circuit converted to a clifford circuit.
+        # print_circuit = False
+        # if (circuit.name == 'circ1' and device_name == 'backend_100') or(circuit.name == 'bv' and device_name == 'backend_0'):
+        #     print_circuit = True
+        # achieved_fidelity = heli_fide_helper(to_clifford(quantum_circuit, backend=backend, is_clifford=True), Backend_NoiseModel(), backend, shots=900, measure=True, print_circuit=print_circuit)
+        # # This is the fidelity of the original circuit not converted to a clifford circuit
+        # oracle_fidelity = heli_fide_helper(to_clifford(quantum_circuit, backend=backend, is_clifford=False), Backend_NoiseModel(), backend, shots=900, measure=False, print_circuit=print_circuit)
         #Scoring process
         diff = abs(user_desired_fidelity - achieved_fidelity)
         if achieved_fidelity < user_desired_fidelity:
             diff *= self.penalty_factor
-        print("Diff", diff)
 
         # diff_2 = abs(user_desired_fidelity - oracle_fidelity)
         # if oracle_fidelity < user_desired_fidelity:
         #     diff_2 *= self.penalty_factor
-        # print("Diff2", diff_2)
 
         return diff
         # return diff, diff_2, achieved_fidelity, oracle_fidelity

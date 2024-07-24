@@ -16,4 +16,6 @@ Once that is done run the following command
 python3 scheduler_filter.py
 ```
 
+Output: [9, 18, 23, 31, 39, 44, 50, 60, 69, 77, 100]
+
 The output is similar to the trends shown in experiment 4.5 in the paper. The reason for not being exactly similar is that the backends used during the original evaluation was slightly different to the ones used for the experiments documentation. The reason for this different in the non determinism in probabilistically generating the devices topologies and error rates.

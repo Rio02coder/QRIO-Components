@@ -32,13 +32,18 @@ We need to first ensure that the most recent version of `node` and `React` is in
 
 # Setup the cluster
 
-To setup the cluster, one must have the following setup:
+To setup the cluster, one must have the following setup(In a real setting this is usually the job of the Vendor):
 
 1. Docker (Once setup make sure that you are logged in to your docker account in docker hub. This can be made sure using commands for docker login.
    The login step is crucial as the master server will your namespace which is linked to your docker account to upload docker containers.)
+   https://docs.docker.com/desktop/install/mac-install/ - Docker for mac installation
+   https://hub.docker.com - Docker hub
+   Once again, make sure you are logged in to your docker hub account in your docker desktop.
 2. Kubernetes
 3. Kubectl
+   Kubernetes and Kubectl installation on mac - https://kubernetes.io/docs/tasks/tools/install-kubectl-macos/
 4. Minikube
+   Minikube installation: https://minikube.sigs.k8s.io/docs/start/?arch=%2Fmacos%2Fx86-64%2Fstable%2Fbinary+download
 
 Once setup run the following command in the root directory of your system to setup the minikube cluster:
 
@@ -231,4 +236,6 @@ Once all the components are setup and running, we can start interacting with the
 
 # Experiments
 
-Once all the above instructions are followed we can start running the experiments. We recommend going through them in order. Experiment 1 - Experiment 5. The details on how to run these experiments are given in their individual folders. An Important Note: Since these experiments (2-5) use a custom backend we can have issues with transpilation as mentioned in this GitHub issue: https://github.com/Qiskit/qiskit/pull/11333/commits/735e958e36026bc0981c0f3627106c47e6ae8ac7#diff-00276708f86c726ae04a2c670e74177eaad6aad971e017951bb5792501d13bf5 To fix this, go the virtual env folder of QRIOMeta-main folder and then to lib/python3.11/site-packages/qiskit/transpiler/target.py line 581 and replace that with `return qargs - {None}` . This fix is suggested by this GitHub issue.
+Once all the above instructions are followed we can start running the experiments. We recommend going through them in order. Experiment 1 - Experiment 5. The details on how to run these experiments are given in their individual folders.
+
+An IMPORTANT NOTE: Since these experiments (2-5) use a custom backend we can have issues with transpilation as mentioned in this GitHub issue: https://github.com/Qiskit/qiskit/pull/11333/commits/735e958e36026bc0981c0f3627106c47e6ae8ac7#diff-00276708f86c726ae04a2c670e74177eaad6aad971e017951bb5792501d13bf5 To fix this, go the virtual env folder of QRIOMeta-main folder and then to lib/python3.11/site-packages/qiskit/transpiler/target.py line 581 and replace that with `return qargs - {None}` . This fix is suggested by this GitHub issue.

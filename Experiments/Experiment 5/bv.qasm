@@ -27,8 +27,6 @@ h q[9];
 barrier q;
 
 // Apply the oracle function
-// Define the oracle function, f(x) = a*x + b (where a = 1010101010 and b = 1)
-// Apply CX gates controlled by q[10] (the auxiliary qubit) and target qubits (q[0] to q[9])
 cx q[0], q[10];
 cx q[2], q[10];
 cx q[4], q[10];

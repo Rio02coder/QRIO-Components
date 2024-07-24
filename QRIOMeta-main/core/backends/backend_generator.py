@@ -23,8 +23,8 @@ qubit_list = [15, 20, 27, 35, 50, 60, 78, 85, 95, 100]
 qubit_props = ['T1', 'T2', 'readout_error', 'readout_length']
 unit_map = {'T1': "us", 'T2': "us", 'readout_error': '', 'readout_length': 'ns'}
 value_map = {'T1': normal(500e3, 100e3), 'T2': normal(500e3, 100e3), 'readout_error': normal(0.15, 0.05), 'readout_length': 30}
-gate_error = normal(0.04, 0.015)
-basis_gates = ["u1","u2","u3","cx"]
+gate_error = normal(0.01, 0.07)
+basis_gates = ["u1","u2","u3","rz","cx"]
 
 
 def build_backend(num_qubits, edge_probability, backend_name):
@@ -100,7 +100,7 @@ def build_backend_json(num_qubits, edge_probability, backend_name):
     gate_configs = []
     single_qubits = []
     interactions = []
-    gate_error = random.uniform(0.01, 0.7)
+    gate_error = random.uniform(0.001, 0.9)
 
     G = nx.Graph()
     
@@ -203,9 +203,9 @@ def build_backend_json(num_qubits, edge_probability, backend_name):
         'value':'10'
     }]
 
-    gate_parameter_map = {"u1":["lambda"], "u2":["phi","lambda"], "u3": ["theta","phi","lambda"], "cx": []}
-    gate_qasm_def_map = {"u1": "gate u1(lambda) q { U(0,0,lambda) q; }", "u2": "gate u2(phi,lambda) q { U(pi/2,phi,lambda) q; }", "u3" : "u3(theta,phi,lambda) q { U(theta,phi,lambda) q; }", "cx": "gate cx q1,q2 { CX q1,q2; }"}
-    gate_cm_map = {"u1": single_qubits, "u2": single_qubits, "u3": single_qubits, "cx": interactions}
+    gate_parameter_map = {"u1":["lambda"], "u2":["phi","lambda"], "u3": ["theta","phi","lambda"], "rz": ["theta"], "cx": []}
+    gate_qasm_def_map = {"u1": "gate u1(lambda) q { U(0,0,lambda) q; }", "u2": "gate u2(phi,lambda) q { U(pi/2,phi,lambda) q; }", "u3" : "u3(theta,phi,lambda) q { U(theta,phi,lambda) q; }", "rz": "gate rz(theta) q { U(0, 0, theta) q; }", "cx": "gate cx q1,q2 { CX q1,q2; }"}
+    gate_cm_map = {"u1": single_qubits, "u2": single_qubits, "u3": single_qubits, "rz": single_qubits, "cx": interactions}
 
 
     
@@ -301,6 +301,6 @@ for i in qubit_list:
             python_file.write("from qiskit_aer import AerSimulator\n")
             python_file.write(f"prop_dict = {prop_formatted_dict}\n")
             python_file.write(f"config_dict = {config_formatted_dict}\n")
-            python_file.write(f"backend = AerSimulator(properties=BackendProperties.from_dict(prop_dict), configuration=QasmBackendConfiguration.from_dict(config_dict), basis_gates=['u1','u2','u3','cx'])")
+            python_file.write(f"backend = AerSimulator(properties=BackendProperties.from_dict(prop_dict), configuration=QasmBackendConfiguration.from_dict(config_dict), basis_gates=['u1','u2','u3','rz','cx'])")
         idx = idx + 1
 

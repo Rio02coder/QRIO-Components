@@ -12,18 +12,14 @@ enter the number of qubits as `10`
 enter the CPU and Memory as 0
 
 In the second page,
-enter error rate as 0.00933
+enter error rate as 0.0933
 T1 as 0.000059
 T2 as 0.000033
-Readout as 0.00912
+Readout as 0.0912
 
-In the third page, you can set either Fidelity or Topology. This part is entirely up to the evaluator. No matter what the chosen strategy is the scheduler will try for the best device satisfying that requirement.
+In the third page, you can set either Fidelity or Topology. No matter what the chosen strategy is the scheduler will try for the best device satisfying that requirement.
 
-To verify the fidelity requirement:
-
-Check the logs for the terminal where the meta server is running and note the fidelities of the devices.
-
-Check the final device where the process has been scheduled. It has a fidelity which greater than or equal to the fidelity requested.
+For a concrete step we recommend following the topology option and then default topology. This will consume the least amount of time to configure and test.
 
 Verifying the topology request is slightly harder as it requires analyzing the topology and topology of the transpiled circuit. However, a cursory check would be that the device where the process is scheduled has the lowest score amongst all the filtered devices. This can be viewed from the logs running the Meta server.
 

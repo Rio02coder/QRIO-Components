@@ -21,6 +21,15 @@ u1(pi/3) q[2]; // U1 gate with pi/3 phase shift
 u3(pi/2, pi/3, pi/4) q[3]; // U3 gate with three parameters
 ccx q[4], q[5], q[6]; // Toffoli gate
 
+// Adding Rz gates
+rz(pi/7) q[0]; // Rz gate with pi/7 phase shift
+rz(pi/5) q[1]; // Rz gate with pi/5 phase shift
+rz(2*pi/7) q[2]; // Rz gate with 2*pi/7 phase shift
+rz(3*pi/8) q[3]; // Rz gate with 3*pi/8 phase shift
+rz(4*pi/9) q[4]; // Rz gate with 4*pi/9 phase shift
+rz(5*pi/11) q[5]; // Rz gate with 5*pi/11 phase shift
+rz(6*pi/13) q[6]; // Rz gate with 6*pi/13 phase shift
+
 // Additional gates to add complexity
 h q[0];
 h q[1];

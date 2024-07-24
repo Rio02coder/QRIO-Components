@@ -13,9 +13,11 @@ Create a virtual environment
 pip install requests
 ```
 
+In topology.py we need to enter the META-SERVER-IP in line 4 and line 41
+
 We need to do one change in QRIOMeta-main
 
-Go to QRIOMeta-main/core/utils.py comment line 198 to 202 and uncomment 205 to 209
+Go to QRIOMeta-main/core/utils.py uncomment 164 to 168 and comment everything else
 
 Once that is done run the following command
 
