@@ -9,7 +9,7 @@ const Logo = (props: TProps) => {
     <img
       src={require("../logos/Qube_transparent.png")}
       alt="Logo"
-      style={{ height: props.height ? props.height : "20%" }}
+      style={{ height: props.height ? props.height : "60%" }}
     />
   );
 };

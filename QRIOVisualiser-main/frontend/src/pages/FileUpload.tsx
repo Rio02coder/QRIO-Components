@@ -56,7 +56,7 @@ const FileUpload: React.FC = () => {
   };
 
   return (
-    <div className="box gradDynamic">
+    <div className="box">
       <Logo />
       <ChooserBox>
         <UploadButton
