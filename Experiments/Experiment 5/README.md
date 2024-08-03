@@ -13,7 +13,7 @@ We also show the diagrams of converted(to clifford) and unconverted(to clifford)
 If you have a virtual environment already running and has `requests` installed then you can we keep using that. If not please do follow the following steps
 
 ```bash
-Create a virtual environment
+Create a virtual environment of Python 3.11
 pip install requests
 ```
 
