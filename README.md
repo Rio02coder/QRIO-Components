@@ -45,7 +45,7 @@ To setup the cluster, one must have the following setup(In a real setting this i
 4. Minikube
    Minikube installation: https://minikube.sigs.k8s.io/docs/start/?arch=%2Fmacos%2Fx86-64%2Fstable%2Fbinary+download
 
-Once setup run the following command in the root directory of your system to setup the minikube cluster:
+Once setup run the following command in the root directory of your system to setup the minikube cluster(As an example you can use 11):
 
 ```bash
   minikube start -p qrio -n <ENTER THE NUMBER OF NODES FOR THE CLUSTER>
@@ -84,7 +84,7 @@ backend = <YOUR QUANTUM BACKEND AS A QISKIT BACKEND>
 ```
 
 As example backends we have provided some IBM fake backends in the files `qrio-m02.py` to `qrio-m11.py` in the root directory `QRIOMeta-main/core/backends` (This is considering a 11 node cluster. So, we have 10 worker nodes and 1 master node).
-The contents of these files can be placed in `backend.py` in the worker nodes in the cluster.
+The contents of these files can be placed in `backend.py` in the worker nodes in the cluster. Note, these individual `backend.py` files are in the root directory of the worker node.
 
 # Setup the scheduler
 
