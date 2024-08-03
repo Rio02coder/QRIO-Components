@@ -20,7 +20,7 @@ When the setup of QRIO meta is done, we can run it in the following way:
 
 # Setup QRIO Visualizer
 
-To setup the QRIO Visualizer we simply require to change the endpoints of the Meta server and Master server. To do so, first `cd QRIOVisualiser-main/frontend/src/backend/server.ts` from the root directory of the project. It is necessary that you do not run the metaserver in `localhost`
+To setup the QRIO Visualizer we simply require to change the endpoints of the Meta server and Master server. To do so, first `cd QRIOVisualiser-main/frontend/src/backend/` from the root directory of the project. Change line 5 of `server.ts` to reflect the IP address of the Meta server. It is necessary that you do not run the metaserver in `localhost`. After the edit the line should look something like: `export const META_URL = "http://<META-SERVER-IP-WHICH-IS-NOT-LOCALHOST>:8000/";` . Moreover, this IP should be the same as the IP the Meta server is running on as setup in previous steps.
 
 # Running QRIO Visualizer
 
