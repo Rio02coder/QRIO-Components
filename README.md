@@ -4,14 +4,14 @@ Demo video drive link: https://drive.google.com/file/d/1HTfthhcSC0FUswhxCshzbNE1
 
 # Setup QRIO Meta server
 
-To setup the QRIO meta server we require to create backends. First we need to: `cd QRIOMeta-main/core/backends` and then change the files `qrio-m02`, `qrio-m03` up till `qrio-m11`. These files are the initial IBM quantum backends we have placed as an example. However, we require to change these to reflect the backends in each node in the cluster. Also, the number of files to modify/create here are the `number nodes in the cluster - 1` (as one of the nodes in the cluster will be the master server and no job is scheduled there). Additionally, we can ignore other files currently in the directory.
+To setup the QRIO meta server we require to create backends. First we need to: `cd QRIOMeta-main/core/backends` and then change the files `qrio-m02`, `qrio-m03` up till `qrio-m11` if we wish to support backends which are different from the backends mentioned in those files. These files are the initial IBM quantum backends we have placed as an example. Also, the number of files to modify/create here are the `number nodes in the cluster - 1` (as one of the nodes in the cluster will be the master server and no job is scheduled there). So, if a vendor wants to create more backends, they are free to do so by creating more files with the filename format qrio-m<number>.py Additionally, we can ignore other files currently in the directory.
 
 # Running QRIO Meta server
 
 When the setup of QRIO meta is done, we can run it in the following way:
 
 1. cd `QRIOMeta-main` from the root of the project.
-2. Create a virtual environment for Python
+2. Create a virtual environment for Python 3.11
 3. `pip install -r requirements.txt`
 4. `python3 manage.py showmigrations`
 5. `python3 manage.py makemigrations`
