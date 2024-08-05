@@ -212,7 +212,7 @@ spec:
       name: circuitnoise-config
 ```
 
-Once done, we can check the installation with the following command.
+Once done, exit the master node and check the installation with the following command.
 
 ```bash
 kubectl get pods -n kube-system
