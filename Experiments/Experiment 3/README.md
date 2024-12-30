@@ -7,7 +7,7 @@ This experiment shows the performance of the filtering algorithm of the schedule
 If you have a virtual environment already running then you can we keep using that. If not please do follow the following steps
 
 ```bash
-Create a virtual environment
+Create a virtual environment of Python 3.11
 ```
 
 Once that is done run the following command

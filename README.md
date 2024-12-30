@@ -4,23 +4,26 @@ Demo video drive link: https://drive.google.com/file/d/1HTfthhcSC0FUswhxCshzbNE1
 
 # Setup QRIO Meta server
 
-To setup the QRIO meta server we require to create backends. First we need to: `cd QRIOMeta-main/core/backends` and then change the files `qrio-m02`, `qrio-m03` up till `qrio-m11`. These files are the initial IBM quantum backends we have placed as an example. However, we require to change these to reflect the backends in each node in the cluster. Also, the number of files to modify/create here are the `number nodes in the cluster - 1` (as one of the nodes in the cluster will be the master server and no job is scheduled there). Additionally, we can ignore other files currently in the directory.
+To setup the QRIO meta server we require to create backends. First we need to: `cd QRIOMeta-main/core/backends` and then change the files `qrio-m02`, `qrio-m03` up till `qrio-m11` if we wish to support backends which are different from the backends mentioned in those files. These files are the initial IBM quantum backends we have placed as an example. If we are happy with the example backends provided there, we can use them as provided. Also, the number of files to modify/create here are the `number nodes in the cluster - 1` (as one of the nodes in the cluster will be the master server and no job is scheduled there). So, if a vendor wants to create more backends, they are free to do so by creating more files with the filename format qrio-m<number>.py Additionally, we can ignore other files currently in the directory.
 
 # Running QRIO Meta server
 
 When the setup of QRIO meta is done, we can run it in the following way:
 
 1. cd `QRIOMeta-main` from the root of the project.
-2. Create a virtual environment for Python
+2. Create a virtual environment for Python 3.11
 3. `pip install -r requirements.txt`
 4. `python3 manage.py showmigrations`
 5. `python3 manage.py makemigrations`
 6. `python3 manage.py migrate`
 7. `python3 manage.py runserver <IP ADDRESS-WHICH-IS-NOT-LOCALHOST>:8000`
 
+We recommend getting this IP address using a command like:
+`ipconfig getifaddr en0`
+
 # Setup QRIO Visualizer
 
-To setup the QRIO Visualizer we simply require to change the endpoints of the Meta server and Master server. To do so, first `cd QRIOVisualiser-main/frontend/src/backend/server.ts` from the root directory of the project. It is necessary that you do not run the metaserver in `localhost`
+To setup the QRIO Visualizer we simply require to change the endpoints of the Meta server and Master server. To do so, first `cd QRIOVisualiser-main/frontend/src/backend/` from the root directory of the project. Change line 5 of `server.ts` to reflect the IP address of the Meta server. It is necessary that you do not run the metaserver in `localhost`. After the edit the line should look something like: `export const META_URL = "http://<META-SERVER-IP-WHICH-IS-NOT-LOCALHOST>:8000/";` . Moreover, this IP should be the same as the IP the Meta server is running on as setup in previous steps.
 
 # Running QRIO Visualizer
 
@@ -38,14 +41,14 @@ To setup the cluster, one must have the following setup(In a real setting this i
    The login step is crucial as the master server will your namespace which is linked to your docker account to upload docker containers.)
    https://docs.docker.com/desktop/install/mac-install/ - Docker for mac installation
    https://hub.docker.com - Docker hub
-   Once again, make sure you are logged in to your docker hub account in your docker desktop.
+   Once again, make sure you are logged in to your docker hub account in your docker desktop. (This step is important for the use of the system). An easy way to login is from the docker desktop application under sign in.
 2. Kubernetes
 3. Kubectl
    Kubernetes and Kubectl installation on mac - https://kubernetes.io/docs/tasks/tools/install-kubectl-macos/
 4. Minikube
    Minikube installation: https://minikube.sigs.k8s.io/docs/start/?arch=%2Fmacos%2Fx86-64%2Fstable%2Fbinary+download
 
-Once setup run the following command in the root directory of your system to setup the minikube cluster:
+Once setup run the following command in the root directory of your system to setup the minikube cluster(As an example you can use 11):
 
 ```bash
   minikube start -p qrio -n <ENTER THE NUMBER OF NODES FOR THE CLUSTER>
@@ -84,7 +87,7 @@ backend = <YOUR QUANTUM BACKEND AS A QISKIT BACKEND>
 ```
 
 As example backends we have provided some IBM fake backends in the files `qrio-m02.py` to `qrio-m11.py` in the root directory `QRIOMeta-main/core/backends` (This is considering a 11 node cluster. So, we have 10 worker nodes and 1 master node).
-The contents of these files can be placed in `backend.py` in the worker nodes in the cluster.
+The contents of these files can be placed in `backend.py` in the worker nodes in the cluster. Note, these individual `backend.py` files are in the root directory of the worker node.
 
 # Setup the scheduler
 
@@ -95,6 +98,8 @@ To do so, first `cd QRIO-Components/scheduler-plugins-master/pkg/circuitnoise/No
 To setup the scheduler of QRIO, we require to build its docker image.
 
 To do so, first `cd` to `scheduler-plugins-master` inside `QRIO Components` and then to `hack`. In the file `build-images.sh` change line 26 to 29 to reflect your docker registry.
+1. This involves naming the Registry to use. The value for this is available in: docker desktop under the hub tab, right next to the search bar.
+2. We also require to name the image to use and specifically the Tag part. The value for this can be like `v001` or `v002`. Ultimately this is like a version number.
 
 Once done, get back to `scheduler-plugins-master` and run the following command:
 
@@ -212,7 +217,7 @@ spec:
       name: circuitnoise-config
 ```
 
-Once done, we can check the installation with the following command.
+Once done, exit the master node and check the installation with the following command.
 
 ```bash
 kubectl get pods -n kube-system

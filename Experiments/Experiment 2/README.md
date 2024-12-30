@@ -9,7 +9,7 @@ The overview is that we have three different backends - `backend_0`, `backend_1`
 If you have a virtual environment already running and has `requests` installed then you can we keep using that. If not please do follow the following steps
 
 ```bash
-Create a virtual environment
+Create a virtual environment of Python 3.11
 pip install requests
 ```
 
