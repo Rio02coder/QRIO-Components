@@ -23,8 +23,8 @@ qubit_list = [15, 20, 27, 35, 50, 60, 78, 85, 95, 100]
 qubit_props = ['T1', 'T2', 'readout_error', 'readout_length']
 unit_map = {'T1': "us", 'T2': "us", 'readout_error': '', 'readout_length': 'ns'}
 value_map = {'T1': normal(500e3, 100e3), 'T2': normal(500e3, 100e3), 'readout_error': normal(0.15, 0.05), 'readout_length': 30}
-gate_error = normal(0.01, 0.07)
-basis_gates = ["u1","u2","u3","rz","cx"]
+gate_error = normal(0.01, 0.04)
+basis_gates = ["ry","rz","cx"]
 
 
 def build_backend(num_qubits, edge_probability, backend_name):
@@ -100,7 +100,7 @@ def build_backend_json(num_qubits, edge_probability, backend_name):
     gate_configs = []
     single_qubits = []
     interactions = []
-    gate_error = random.uniform(0.001, 0.9)
+    gate_error = random.uniform(0.02, 0.04)
 
     G = nx.Graph()
     

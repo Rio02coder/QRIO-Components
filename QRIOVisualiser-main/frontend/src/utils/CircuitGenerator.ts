@@ -39,6 +39,7 @@ export default class CircuitGenerator {
     const lines = circConnections.map((conn) =>
       this.generateSingleConnection(conn[0], conn[1])
     );
+    console.log(lines);
     return lines.join("\n");
   }
 
